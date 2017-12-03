@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- the <title> tag is the title of the tab in your browser when you open the page -->
+    <title>Chelsea's Basset World</title>
+
+    <!-- tells the browser how to display the page, not sure exactly what's it's doing. -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+    <!-- the <style> block tells the browser what color to make things that aren't in the 3d canvas -->
+    <style>
+      body {
+      font-family: Monospace;
+      background-color: #000;
+      color: #fff;
+      margin: 0px;
+      overflow: hidden;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- this library we are importing to allow us to do 3d stuff, to learn more go to https://threejs.org/ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/88/three.js"></script>
+
+    <!-- these libraries I found in this example on threejs https://threejs.org/examples/#webgl_loader_obj_mtl
+      the first one DDSLoader I'm not sure what it does
+      the second MTLLoader allows us to load texture files *.mtl and the *.png files that they point to
+      the third one OBJLoader allows us to load *.obj files. -->
+    <script src="js/DDSLoader.js"></script>
+    <script src="js/MTLLoader.js"></script>
+    <script src="js/OBJLoader.js"></script>
+    <script src="js/PointDragControls-funny.js"></script>
+
+    <!-- these libraries were in the example but I don't think we need them. TODO try adding them and see what happens -->
+    <!-- <script src="js/Detector.js"></script> -->
+    <!-- <script src="js/libs/stats.min.js"></script> -->
+
+    <!-- Below is the content of the page. It is some javascript code that uses the libraries we imported above to load and render a biscuit. -->
+    <script src="biscuit-funny.js"></script>
+  </body>
+</html>
