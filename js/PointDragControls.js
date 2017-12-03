@@ -171,8 +171,8 @@ THREE.PointDragControls = function(){
             
             g.raycaster.setFromCamera(event_v, camera);
             
-            var intersects = g.raycaster.intersectObjects(p.objects);
-            
+            var intersects = g.raycaster.intersectObjects(p.objects, true);
+
             if ( intersects.length > 0 ){
                 g.intersect.forward = intersects[0];
                 var rev = {
@@ -181,8 +181,9 @@ THREE.PointDragControls = function(){
                 };
                 
                 g.raycaster.set(rev.origin,rev.direction);
-                rev.intersects = g.raycaster.intersectObjects(p.objects);
-                g.intersect.reverse = rev.intersects[rev.intersects.length - 1];
+                rev.intersects = g.raycaster.intersectObjects(p.objects, true);
+                g.intersect.reverse = intersects[0]
+                // g.intersect.reverse = rev.intersects[rev.intersects.length - 1];
                 return true;
             }
             return false;

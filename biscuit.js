@@ -1,21 +1,101 @@
-
 // two variables the example used, I don't think we need them. TODO findout if we need them
-var container, stats;
 
-var camera, scene, renderer;
+var scene;
 
-var mouseX = 0, mouseY = 0;
+initPDC();
 
-var windowHalfX = window.innerWidth / 2;
-var windowHalfY = window.innerHeight / 2;
+function initPDC() {
+    // create the renderer
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild( renderer.domElement );
+    
+    // and the camera
+    var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
 
+    // How far away the camera is from our biscuit
+    camera.position.set(0, 0, 750);
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-init();
-animate();
+    // The first argument to THREE.PointLight appears to be the color that the biscuit is illuminated with.
+    var pointLight = new THREE.PointLight( 0xffffff, 0.8 );
+    camera.add( pointLight );
+    
+    scene = new THREE.Scene();
+    var ambientLight = new THREE.AmbientLight( 0xcccccc, 1 );
+    scene.add( ambientLight );
 
+    function newCube(name) {
+        var geometry = new THREE.BoxGeometry( 100, 100, 100 );
+        var material = new THREE.MeshFaceMaterial([
+            new THREE.MeshBasicMaterial({color: 0x00ff00}),
+            new THREE.MeshBasicMaterial({color: 0xff0000}),
+            new THREE.MeshBasicMaterial({color: 0x0000ff}),
+            new THREE.MeshBasicMaterial({color: 0xffff00}),
+            new THREE.MeshBasicMaterial({color: 0x00ffff}),
+            new THREE.MeshBasicMaterial({color: 0xff00ff})
+        ]);
+        var cube = new THREE.Mesh( geometry, material );
+        cube.name = name
+        scene.add(cube);
+    }
+    function newBasset(name, folder, mtl_file, obj_file) {
+        return new Promise(function(resolve, reject) {
+            var mtlLoader = new THREE.MTLLoader();
+            mtlLoader.setPath(folder);
+            mtlLoader.load(mtl_file, function( materials ) {
+                materials.preload();
+                var objLoader = new THREE.OBJLoader();
+                objLoader.setMaterials( materials );
+                objLoader.setPath(folder);
+                objLoader.load(obj_file, function ( object ) {
+                    object.position.set(0, 0, 0);
+                    object.name = name
+                    scene.add( object );
+                    b2 = object.clone()
+                    b2.position.set(-1,0,0);
+                    scene.add(b2)
+                    b3 = object.clone()
+                    b3.position.set(1,0,0);
+                    scene.add(b3)
+                    resolve()
+                });
+            });
+        })
+    }
+
+    // newCube('cube');
+    newBasset(
+        'bisc1',
+        'bisc/',
+        '59f116fab83ffbdbfeebb2fc_5a1bb2856bbc6105812c19aa_100lod.mtl',
+        '59f116fab83ffbdbfeebb2fc_5a1bb2856bbc6105812c19a9_100lod.obj').then(
+            function () {
+                console.log(scene.children)
+                renderer.render(scene, camera);
+                
+                // initialise controls
+                var controls = new THREE.PointDragControls();
+                controls.init( scene,camera,renderer, {
+                    auto_render: true
+                });
+            }
+        )
+}
+
+// var container, stats;
+
+// var camera, scene, renderer;
+
+// var mouseX = 0, mouseY = 0;
+
+// var windowHalfX = window.innerWidth / 2;
+// var windowHalfY = window.innerHeight / 2;
+
+// init();
+// animate();
 
 function init() {
-
     container = document.createElement( 'div' );
     document.body.appendChild( container );
 
@@ -23,8 +103,6 @@ function init() {
 
     // How far away the camera is from our biscuit
     camera.position.z = 750;
-
-    // scene
 
     scene = new THREE.Scene();
 
@@ -67,55 +145,35 @@ function init() {
 
     });
 
-    //
-
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     container.appendChild( renderer.domElement );
 
-    document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+    document.addEventListener('mousemove', function (event) {
+        mouseX = ( event.clientX - windowHalfX ) / 2;
+        mouseY = ( event.clientY - windowHalfY ) / 2;
+    }, false );
 
-    //
+    window.addEventListener('resize', function () {
+        windowHalfX = window.innerWidth / 2;
+        windowHalfY = window.innerHeight / 2;
 
-    window.addEventListener( 'resize', onWindowResize, false );
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
 
-}
-
-function onWindowResize() {
-
-    windowHalfX = window.innerWidth / 2;
-    windowHalfY = window.innerHeight / 2;
-
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize( window.innerWidth, window.innerHeight );
-
-}
-
-function onDocumentMouseMove( event ) {
-
-    mouseX = ( event.clientX - windowHalfX ) / 2;
-    mouseY = ( event.clientY - windowHalfY ) / 2;
-
+        renderer.setSize( window.innerWidth, window.innerHeight );
+    }, false );
 }
 
 function animate() {
-
-    requestAnimationFrame( animate );
-    render();
-
-}
-
-function render() {
-
+    // Do a new render based on camera position.
     camera.position.x += ( mouseX - camera.position.x ) * .05;
     camera.position.y += ( - mouseY - camera.position.y ) * .05;
-
     camera.lookAt( scene.position );
-
     renderer.render( scene, camera );
 
+    // Set up the animate function to be called over and over.
+    requestAnimationFrame( animate );
 }
 
