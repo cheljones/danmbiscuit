@@ -128,7 +128,7 @@ THREE.PointDragControls = function(){
                                                     // this is the minimum cumulative difference between screen x and y 
                                                     // values (in pixels) before the active axis is chosen
                                                     
-            z_shift_distance:   10,                 // controls the sensitivity by which objects move towards/away from
+            z_shift_distance:   1,                 // controls the sensitivity by which objects move towards/away from
                                                     // the camera when performing translations parallel to the camera
                                                     // normal vector. Bigger = less sensitive
                                                     
@@ -144,7 +144,7 @@ THREE.PointDragControls = function(){
             lock_translation_axes:  false,          // if true, decide which pointer axis (ie x or y) is preferred early
                                                     // in the pointer movement, then lock object translation to this axis
         
-            lock_rotation_axes:     true,           // same as lock_translation_axis but for rotation. This is locked by
+            lock_rotation_axes:     false,           // same as lock_translation_axis but for rotation. This is locked by
                                                     // default under the assumption that  rotations are less intuitive 
                                                     // than translations
                                                     
