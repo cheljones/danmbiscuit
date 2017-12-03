@@ -9,7 +9,7 @@ function initPDC() {
     var renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
-    
+
     // and the camera
     var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
 
@@ -20,7 +20,7 @@ function initPDC() {
     // The first argument to THREE.PointLight appears to be the color that the biscuit is illuminated with.
     var pointLight = new THREE.PointLight( 0xffffff, 0.8 );
     camera.add( pointLight );
-    
+
     scene = new THREE.Scene();
     var ambientLight = new THREE.AmbientLight( 0xcccccc, 1 );
     scene.add( ambientLight );
@@ -64,14 +64,14 @@ function initPDC() {
     // newCube('cube');
     newBasset(
         'bisc1',
-        9,
+        20,
         'bisc/',
         '59f116fab83ffbdbfeebb2fc_5a1bb2856bbc6105812c19aa_100lod.mtl',
         '59f116fab83ffbdbfeebb2fc_5a1bb2856bbc6105812c19a9_100lod.obj').then(
             function () {
                 console.log(scene.children)
                 renderer.render(scene, camera);
-                
+
                 // initialise controls
                 var controls = new THREE.PointDragControls();
                 controls.init( scene,camera,renderer, {
@@ -174,4 +174,3 @@ function animate() {
     // Set up the animate function to be called over and over.
     requestAnimationFrame( animate );
 }
-
