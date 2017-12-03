@@ -22,7 +22,7 @@ function init() {
     camera.add( pointLight );
 
     scene = new THREE.Scene();
-    var ambientLight = new THREE.AmbientLight( 0xcccccc, .7 );
+    var ambientLight = new THREE.AmbientLight( 0xcccccc, 1 );
     scene.add( ambientLight );
 
     function newBasset(name, copies, folder, mtl_file, obj_file, scale) {
