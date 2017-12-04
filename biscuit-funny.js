@@ -1,17 +1,24 @@
 // two variables the example used, I don't think we need them. TODO findout if we need them
 
-var scene;
+var scene, renderer, camera;
 
 initPDC();
+window.addEventListener('resize', function (){
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.render(scene, camera);
+}, false);
 
 function initPDC() {
     // create the renderer
-    var renderer = new THREE.WebGLRenderer();
+    renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
 
     // and the camera
-    var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
 
     // How far away the camera is from our biscuit
     camera.position.set(0, 0, 750);
