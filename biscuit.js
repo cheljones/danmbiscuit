@@ -1,4 +1,3 @@
-// two variables the example used, I don't think we need them. TODO findout if we need them
 
 var scene;
 var camera, renderer;
@@ -60,12 +59,12 @@ function init() {
     promises = []
     promises.push(newBasset(
         'bisc1',
-        0,
+        0, // copies
         'bisc/',
         '59f116fab83ffbdbfeebb2fc_5a1bb2856bbc6105812c19aa_100lod.mtl',
         '59f116fab83ffbdbfeebb2fc_5a1bb2856bbc6105812c19a9_100lod.obj',
-        1,
-        0));
+        1, // scale
+        0)); // x position
     promises.push(newBasset(
         'bisc2',
         0,
